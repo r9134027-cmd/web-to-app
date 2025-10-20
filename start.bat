@@ -1,15 +1,19 @@
 @echo off
-title Domain Reconnaissance Tool
-
-echo ============================================================
-echo   Starting Domain Reconnaissance Tool...
-echo ============================================================
+echo ====================================================================
+echo    Advanced Domain Reconnaissance Desktop Application
+echo ====================================================================
 echo.
-echo Server will start on: http://localhost:5000
-echo.
-echo Press Ctrl+C to stop the server
-echo.
-echo ============================================================
+echo Starting application...
 echo.
 
-python app.py
+python run.py
+
+if errorlevel 1 (
+    echo.
+    echo Error: Failed to start application
+    echo.
+    echo Please ensure Python is installed and in your PATH
+    echo Try: python --version
+    echo.
+    pause
+)

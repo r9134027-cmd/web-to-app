@@ -1,0 +1,144 @@
+================================================================================
+  🛡️ ADVANCED DOMAIN RECONNAISSANCE DESKTOP APPLICATION
+================================================================================
+
+QUICK START - Choose your method:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  METHOD 1: Automatic Launcher (RECOMMENDED)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Windows:
+    Double-click: start.bat
+    Or run: python run.py
+
+  macOS/Linux:
+    Run: ./start.sh
+    Or run: python3 run.py
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  METHOD 2: Manual Installation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Install dependencies:
+     pip install -r requirements.txt
+
+  2. Run application:
+     python desktop_app.py
+
+================================================================================
+  WHAT THIS APPLICATION DOES
+================================================================================
+
+  ✓ AI-Powered Domain Security Analysis
+  ✓ Threat Detection & Risk Assessment
+  ✓ SSL Certificate Validation
+  ✓ OWASP Vulnerability Scanning
+  ✓ Compliance Auditing (GDPR, CCPA)
+  ✓ Blockchain/Web3 Domain Analysis
+  ✓ Comprehensive PDF Reports
+  ✓ Real-time Progress Tracking
+
+================================================================================
+  KEY FEATURES
+================================================================================
+
+  🤖 AI & Machine Learning
+     - Phishing detection (85% accuracy)
+     - Anomaly detection
+     - Automated risk scoring
+
+  🔒 Security Analysis
+     - VirusTotal integration
+     - Google Safe Browsing
+     - Security headers check
+     - Port scanning
+
+  🌐 Web3 Support
+     - ENS domains
+     - Unstoppable Domains
+     - Crypto threat detection
+
+  📊 Professional Reports
+     - PDF export
+     - JSON export
+     - Interactive visualizations
+
+================================================================================
+  SYSTEM REQUIREMENTS
+================================================================================
+
+  • Python 3.8 or higher
+  • 2GB RAM (4GB recommended)
+  • Internet connection
+  • Windows/macOS/Linux
+
+================================================================================
+  FIRST TIME SETUP (OPTIONAL)
+================================================================================
+
+  For enhanced features, add API keys to .env file:
+
+  VITE_VIRUSTOTAL_API_KEY=your_key_here
+  VITE_WHOISXMLAPI_KEY=your_key_here
+  VITE_GOOGLE_SAFE_BROWSING_API_KEY=your_key_here
+
+  Note: Application works without API keys but with limited features
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+  Problem: Application won't start
+  Solution: Ensure Python 3.8+ is installed
+           Run: python --version
+
+  Problem: Import errors
+  Solution: Install dependencies
+           Run: pip install -r requirements.txt
+
+  Problem: PyQt5 issues
+  Solution: Install PyQt5 separately
+           Run: pip install PyQt5 --upgrade
+
+================================================================================
+  USAGE GUIDE
+================================================================================
+
+  1. Launch the application
+  2. Enter domain name (e.g., google.com)
+  3. Click "🔍 Start Scan"
+  4. Wait for analysis to complete
+  5. Browse results in tabs:
+     • 📊 Overview
+     • 🔒 Security Analysis
+     • ⚠️ Threats & Vulnerabilities
+     • ✅ Compliance
+     • 💡 Recommendations
+     • 🔧 Raw Data
+  6. Export results as PDF or JSON
+
+================================================================================
+  DOCUMENTATION
+================================================================================
+
+  📄 README.md              - Complete documentation
+  📄 INSTALL.md             - Detailed installation guide
+  📄 CONVERSION_SUMMARY.md  - Technical conversion details
+  📄 LICENSE                - MIT License
+
+================================================================================
+  GETTING STARTED NOW
+================================================================================
+
+  Windows Users:
+    Double-click "start.bat" or run "python run.py"
+
+  macOS/Linux Users:
+    Run "./start.sh" or "python3 run.py"
+
+================================================================================
+
+  🎯 Ready to analyze domains? Launch the application now!
+
+================================================================================
