@@ -26,11 +26,13 @@ def check_authenticity(url: str) -> dict:
     if gs_result and not gs_result['malicious']:
         is_genuine = True
     
+    confidence = calculate_confidence_score(vt_result, gs_result)
     return {
         'is_genuine': is_genuine,
         'vt_result': vt_result,
         'gs_result': gs_result,
-        'confidence_score': calculate_confidence_score(vt_result, gs_result)
+        'confidence': confidence,
+        'confidence_score': confidence
     }
 
 def calculate_confidence_score(vt_result: dict, gs_result: dict) -> int:

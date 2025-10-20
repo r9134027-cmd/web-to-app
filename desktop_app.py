@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
     QGridLayout, QSplitter
 )
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt5.QtGui import QFont, QTextCursor, QPalette, QColor
+from PyQt5.QtGui import QFont, QTextCursor, QPalette, QColor, QPixmap, QIcon
 
 from dotenv import load_dotenv
 from recon import get_recon_data
@@ -130,53 +130,95 @@ class DomainReconApp(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Advanced Domain Reconnaissance Platform")
-        self.setMinimumSize(1200, 800)
+        self.setWindowTitle("Domain Intelligent - Advanced Reconnaissance Platform")
+        self.setMinimumSize(1400, 900)
+
+        logo_path = os.path.join(os.path.dirname(__file__), 'assets', 'noBgWhite.png')
+        if os.path.exists(logo_path):
+            self.setWindowIcon(QIcon(logo_path))
 
         palette = QPalette()
-        palette.setColor(QPalette.Window, QColor(15, 23, 42))
-        palette.setColor(QPalette.WindowText, QColor(241, 245, 249))
-        palette.setColor(QPalette.Base, QColor(30, 41, 59))
-        palette.setColor(QPalette.AlternateBase, QColor(51, 65, 85))
-        palette.setColor(QPalette.Text, QColor(241, 245, 249))
+        palette.setColor(QPalette.Window, QColor(17, 24, 39))
+        palette.setColor(QPalette.WindowText, QColor(243, 244, 246))
+        palette.setColor(QPalette.Base, QColor(31, 41, 55))
+        palette.setColor(QPalette.AlternateBase, QColor(55, 65, 81))
+        palette.setColor(QPalette.Text, QColor(243, 244, 246))
+        palette.setColor(QPalette.Button, QColor(55, 65, 81))
+        palette.setColor(QPalette.ButtonText, QColor(243, 244, 246))
+        palette.setColor(QPalette.Highlight, QColor(59, 130, 246))
+        palette.setColor(QPalette.HighlightedText, QColor(255, 255, 255))
         self.setPalette(palette)
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
+        central_widget.setStyleSheet("background-color: #111827;")
 
         main_layout = QVBoxLayout(central_widget)
-        main_layout.setContentsMargins(20, 20, 20, 20)
-        main_layout.setSpacing(15)
+        main_layout.setContentsMargins(30, 25, 30, 25)
+        main_layout.setSpacing(20)
 
-        title_label = QLabel("🛡️ Advanced Domain Reconnaissance Platform")
-        title_font = QFont("Arial", 24, QFont.Bold)
+        header_widget = QWidget()
+        header_widget.setStyleSheet("""
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1e293b, stop:1 #334155);
+            border-radius: 12px;
+            padding: 20px;
+        """)
+        header_layout = QHBoxLayout(header_widget)
+
+        logo_label = QLabel()
+        logo_pixmap = QPixmap(logo_path)
+        if not logo_pixmap.isNull():
+            scaled_pixmap = logo_pixmap.scaled(80, 80, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            logo_label.setPixmap(scaled_pixmap)
+        header_layout.addWidget(logo_label)
+
+        title_container = QWidget()
+        title_layout = QVBoxLayout(title_container)
+        title_layout.setSpacing(5)
+        title_layout.setContentsMargins(15, 0, 0, 0)
+
+        title_label = QLabel("DOMAIN INTELLIGENT")
+        title_font = QFont("Segoe UI", 28, QFont.Bold)
         title_label.setFont(title_font)
-        title_label.setAlignment(Qt.AlignCenter)
-        title_label.setStyleSheet("color: #3b82f6; padding: 20px;")
-        main_layout.addWidget(title_label)
+        title_label.setStyleSheet("""
+            color: #f1f5f9;
+            background: transparent;
+            letter-spacing: 2px;
+        """)
+        title_layout.addWidget(title_label)
 
-        subtitle_label = QLabel("AI-Powered Security Analysis & Threat Intelligence")
-        subtitle_font = QFont("Arial", 12)
+        subtitle_label = QLabel("Advanced Security Reconnaissance & Threat Intelligence Platform")
+        subtitle_font = QFont("Segoe UI", 11)
         subtitle_label.setFont(subtitle_font)
-        subtitle_label.setAlignment(Qt.AlignCenter)
-        subtitle_label.setStyleSheet("color: #94a3b8; padding-bottom: 10px;")
-        main_layout.addWidget(subtitle_label)
+        subtitle_label.setStyleSheet("""
+            color: #94a3b8;
+            background: transparent;
+        """)
+        title_layout.addWidget(subtitle_label)
+
+        header_layout.addWidget(title_container)
+        header_layout.addStretch()
+
+        main_layout.addWidget(header_widget)
 
         scan_group = QGroupBox("Domain Scanning")
         scan_group.setStyleSheet("""
             QGroupBox {
-                font-weight: bold;
-                border: 2px solid #3b82f6;
-                border-radius: 8px;
-                margin-top: 10px;
-                padding: 15px;
-                background-color: #1e293b;
+                font-weight: 600;
+                font-size: 14px;
+                border: 2px solid #2563eb;
+                border-radius: 10px;
+                margin-top: 15px;
+                padding: 20px;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #1e293b, stop:1 #0f172a);
             }
             QGroupBox::title {
-                color: #3b82f6;
+                color: #60a5fa;
                 subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 5px;
+                left: 15px;
+                padding: 0 8px;
             }
         """)
         scan_layout = QVBoxLayout()
@@ -190,38 +232,48 @@ class DomainReconApp(QMainWindow):
         self.domain_input.setPlaceholderText("Enter domain (e.g., example.com)")
         self.domain_input.setStyleSheet("""
             QLineEdit {
-                padding: 10px;
-                border: 2px solid #475569;
-                border-radius: 5px;
-                background-color: #334155;
-                color: #f1f5f9;
+                padding: 12px 16px;
+                border: 2px solid #374151;
+                border-radius: 8px;
+                background-color: #1f2937;
+                color: #f3f4f6;
                 font-size: 14px;
+                font-family: 'Segoe UI', Arial;
             }
             QLineEdit:focus {
                 border: 2px solid #3b82f6;
+                background-color: #111827;
+            }
+            QLineEdit::placeholder {
+                color: #6b7280;
             }
         """)
         input_layout.addWidget(self.domain_input)
 
-        self.scan_button = QPushButton("🔍 Start Scan")
+        self.scan_button = QPushButton("Start Scan")
         self.scan_button.setStyleSheet("""
             QPushButton {
-                background-color: #3b82f6;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #3b82f6, stop:1 #2563eb);
                 color: white;
-                padding: 10px 30px;
+                padding: 12px 35px;
                 border: none;
-                border-radius: 5px;
-                font-weight: bold;
+                border-radius: 8px;
+                font-weight: 600;
                 font-size: 14px;
+                font-family: 'Segoe UI', Arial;
             }
             QPushButton:hover {
-                background-color: #2563eb;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #2563eb, stop:1 #1d4ed8);
             }
             QPushButton:pressed {
-                background-color: #1e40af;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #1e40af, stop:1 #1e3a8a);
             }
             QPushButton:disabled {
-                background-color: #475569;
+                background-color: #374151;
+                color: #6b7280;
             }
         """)
         self.scan_button.clicked.connect(self.start_scan)
@@ -232,16 +284,19 @@ class DomainReconApp(QMainWindow):
         self.progress_bar = QProgressBar()
         self.progress_bar.setStyleSheet("""
             QProgressBar {
-                border: 2px solid #475569;
-                border-radius: 5px;
+                border: 2px solid #374151;
+                border-radius: 8px;
                 text-align: center;
-                height: 30px;
-                background-color: #334155;
-                color: #f1f5f9;
+                height: 32px;
+                background-color: #1f2937;
+                color: #f3f4f6;
+                font-weight: 600;
+                font-size: 13px;
             }
             QProgressBar::chunk {
-                background-color: #3b82f6;
-                border-radius: 3px;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #3b82f6, stop:0.5 #2563eb, stop:1 #3b82f6);
+                border-radius: 6px;
             }
         """)
         scan_layout.addWidget(self.progress_bar)
@@ -257,109 +312,128 @@ class DomainReconApp(QMainWindow):
         self.tabs = QTabWidget()
         self.tabs.setStyleSheet("""
             QTabWidget::pane {
-                border: 2px solid #475569;
-                border-radius: 5px;
-                background-color: #1e293b;
+                border: 2px solid #374151;
+                border-radius: 10px;
+                background-color: #0f172a;
+                padding: 5px;
             }
             QTabBar::tab {
-                background-color: #334155;
-                color: #94a3b8;
-                padding: 10px 20px;
-                border: 1px solid #475569;
-                border-bottom: none;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-                margin-right: 2px;
+                background-color: #1f2937;
+                color: #9ca3af;
+                padding: 12px 24px;
+                border: none;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                margin-right: 4px;
+                font-weight: 500;
+                font-size: 13px;
             }
             QTabBar::tab:selected {
-                background-color: #3b82f6;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #3b82f6, stop:1 #2563eb);
                 color: white;
+                font-weight: 600;
             }
-            QTabBar::tab:hover {
-                background-color: #475569;
+            QTabBar::tab:hover:!selected {
+                background-color: #374151;
+                color: #d1d5db;
             }
         """)
 
         self.overview_tab = QTextEdit()
         self.setup_text_edit(self.overview_tab)
-        self.tabs.addTab(self.overview_tab, "📊 Overview")
+        self.tabs.addTab(self.overview_tab, "Overview")
 
         self.security_tab = QTextEdit()
         self.setup_text_edit(self.security_tab)
-        self.tabs.addTab(self.security_tab, "🔒 Security Analysis")
+        self.tabs.addTab(self.security_tab, "Security Analysis")
 
         self.threats_tab = QTextEdit()
         self.setup_text_edit(self.threats_tab)
-        self.tabs.addTab(self.threats_tab, "⚠️ Threats & Vulnerabilities")
+        self.tabs.addTab(self.threats_tab, "Threats & Vulnerabilities")
 
         self.compliance_tab = QTextEdit()
         self.setup_text_edit(self.compliance_tab)
-        self.tabs.addTab(self.compliance_tab, "✅ Compliance")
+        self.tabs.addTab(self.compliance_tab, "Compliance")
 
         self.recommendations_tab = QTextEdit()
         self.setup_text_edit(self.recommendations_tab)
-        self.tabs.addTab(self.recommendations_tab, "💡 Recommendations")
+        self.tabs.addTab(self.recommendations_tab, "Recommendations")
 
         self.raw_tab = QTextEdit()
         self.setup_text_edit(self.raw_tab)
-        self.tabs.addTab(self.raw_tab, "🔧 Raw Data")
+        self.tabs.addTab(self.raw_tab, "Raw Data")
 
         main_layout.addWidget(self.tabs)
 
         button_layout = QHBoxLayout()
+        button_layout.setSpacing(12)
 
-        self.export_pdf_button = QPushButton("📄 Export PDF")
+        self.export_pdf_button = QPushButton("Export PDF")
         self.export_pdf_button.setEnabled(False)
         self.export_pdf_button.clicked.connect(self.export_pdf)
-        self.style_action_button(self.export_pdf_button, "#10b981")
+        self.style_action_button(self.export_pdf_button, "#10b981", "#059669")
         button_layout.addWidget(self.export_pdf_button)
 
-        self.export_json_button = QPushButton("💾 Export JSON")
+        self.export_json_button = QPushButton("Export JSON")
         self.export_json_button.setEnabled(False)
         self.export_json_button.clicked.connect(self.export_json)
-        self.style_action_button(self.export_json_button, "#8b5cf6")
+        self.style_action_button(self.export_json_button, "#8b5cf6", "#7c3aed")
         button_layout.addWidget(self.export_json_button)
 
-        self.clear_button = QPushButton("🗑️ Clear Results")
+        self.clear_button = QPushButton("Clear Results")
         self.clear_button.setEnabled(False)
         self.clear_button.clicked.connect(self.clear_results)
-        self.style_action_button(self.clear_button, "#ef4444")
+        self.style_action_button(self.clear_button, "#ef4444", "#dc2626")
         button_layout.addWidget(self.clear_button)
 
         main_layout.addLayout(button_layout)
 
-        self.statusBar().setStyleSheet("background-color: #1e293b; color: #94a3b8;")
+        self.statusBar().setStyleSheet("""
+            background-color: #0f172a;
+            color: #9ca3af;
+            border-top: 2px solid #1f2937;
+            font-size: 12px;
+            padding: 5px;
+        """)
         self.statusBar().showMessage("Ready")
 
     def setup_text_edit(self, text_edit):
         text_edit.setReadOnly(True)
         text_edit.setStyleSheet("""
             QTextEdit {
-                background-color: #0f172a;
-                color: #e2e8f0;
-                border: 1px solid #475569;
-                border-radius: 5px;
-                padding: 10px;
-                font-family: 'Consolas', 'Monaco', monospace;
-                font-size: 12px;
+                background-color: #111827;
+                color: #e5e7eb;
+                border: 2px solid #1f2937;
+                border-radius: 8px;
+                padding: 15px;
+                font-family: 'Segoe UI', 'Consolas', 'Monaco', monospace;
+                font-size: 13px;
+                line-height: 1.6;
             }
         """)
 
-    def style_action_button(self, button, color):
+    def style_action_button(self, button, color, hover_color):
         button.setStyleSheet(f"""
             QPushButton {{
                 background-color: {color};
                 color: white;
-                padding: 10px 20px;
+                padding: 12px 28px;
                 border: none;
-                border-radius: 5px;
-                font-weight: bold;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 13px;
+                font-family: 'Segoe UI', Arial;
             }}
             QPushButton:hover {{
-                opacity: 0.9;
+                background-color: {hover_color};
+            }}
+            QPushButton:pressed {{
+                padding: 13px 27px;
             }}
             QPushButton:disabled {{
-                background-color: #475569;
+                background-color: #374151;
+                color: #6b7280;
             }}
         """)
 
@@ -418,28 +492,53 @@ class DomainReconApp(QMainWindow):
         self.display_raw_data(results)
 
     def display_overview(self, results):
+        confidence = results['authenticity'].get('confidence', results['authenticity'].get('confidence_score', 0))
         html = f"""
-        <h2 style='color: #3b82f6;'>Domain Analysis Overview</h2>
-        <hr>
-        <p><strong>Domain:</strong> {results['domain']}</p>
+        <style>
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; }}
+            h2 {{ color: #60a5fa; border-bottom: 2px solid #1f2937; padding-bottom: 10px; }}
+            h3 {{ color: #a78bfa; margin-top: 25px; margin-bottom: 12px; }}
+            strong {{ color: #d1d5db; }}
+            ul {{ line-height: 2.0; }}
+            li {{ margin-bottom: 8px; }}
+            .stat-badge {{
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 6px;
+                font-weight: 600;
+                margin-left: 8px;
+            }}
+        </style>
+        <h2>Domain Analysis Overview</h2>
+        <p><strong>Domain:</strong> <span style='color: #60a5fa; font-size: 15px;'>{results['domain']}</span></p>
         <p><strong>Timestamp:</strong> {results['timestamp']}</p>
-        <p><strong>Authenticity:</strong> <span style='color: {"#10b981" if results['authenticity']['is_genuine'] else "#ef4444"};'>
-            {'✅ Genuine' if results['authenticity']['is_genuine'] else '❌ Suspicious'}
-        </span></p>
-        <p><strong>Confidence:</strong> {results['authenticity']['confidence']}%</p>
+        <p><strong>Authenticity:</strong>
+            <span class='stat-badge' style='background-color: {"#065f46" if results['authenticity']['is_genuine'] else "#7f1d1d"}; color: white;'>
+                {'Genuine' if results['authenticity']['is_genuine'] else 'Suspicious'}
+            </span>
+        </p>
+        <p><strong>Confidence:</strong> <span style='color: #60a5fa; font-size: 16px; font-weight: 600;'>{confidence}%</span></p>
 
-        <h3 style='color: #8b5cf6; margin-top: 20px;'>Quick Stats</h3>
+        <h3>Quick Stats</h3>
         <ul>
-            <li><strong>Risk Score:</strong> {results['threat_analysis'].get('risk_score', 'N/A')}/100</li>
-            <li><strong>Compliance Score:</strong> {results['compliance_audit'].get('overall_score', 'N/A')}/100</li>
-            <li><strong>Total Vulnerabilities:</strong> {results['vulnerability_analysis'].get('vulnerability_summary', {}).get('total_vulnerabilities', 0)}</li>
+            <li><strong>Risk Score:</strong>
+                <span class='stat-badge' style='background-color: {"#7f1d1d" if results['threat_analysis'].get('risk_score', 0) > 70 else "#854d0e" if results['threat_analysis'].get('risk_score', 0) > 40 else "#065f46"}; color: white;'>
+                    {results['threat_analysis'].get('risk_score', 'N/A')}/100
+                </span>
+            </li>
+            <li><strong>Compliance Score:</strong>
+                <span style='color: #34d399; font-weight: 600;'>{results['compliance_audit'].get('overall_score', 'N/A')}/100</span>
+            </li>
+            <li><strong>Total Vulnerabilities:</strong>
+                <span style='color: #fbbf24; font-weight: 600;'>{results['vulnerability_analysis'].get('vulnerability_summary', {}).get('total_vulnerabilities', 0)}</span>
+            </li>
         </ul>
         """
 
         if results.get('geolocation'):
             geo = results['geolocation']
             html += f"""
-            <h3 style='color: #14b8a6; margin-top: 20px;'>Location Information</h3>
+            <h3>Location Information</h3>
             <ul>
                 <li><strong>Country:</strong> {geo.get('country', 'N/A')}</li>
                 <li><strong>City:</strong> {geo.get('city', 'N/A')}</li>
@@ -451,14 +550,24 @@ class DomainReconApp(QMainWindow):
 
     def display_security(self, results):
         recon = results.get('reconnaissance', {})
-        html = "<h2 style='color: #3b82f6;'>Security Analysis</h2><hr>"
+        html = """
+        <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; }
+            h2 { color: #60a5fa; border-bottom: 2px solid #1f2937; padding-bottom: 10px; }
+            h3 { color: #a78bfa; margin-top: 25px; margin-bottom: 12px; }
+            strong { color: #d1d5db; }
+            ul { line-height: 2.0; }
+            li { margin-bottom: 8px; }
+        </style>
+        <h2>Security Analysis</h2>
+        """
 
         ssl = recon.get('ssl', {})
         html += f"""
-        <h3 style='color: #8b5cf6;'>SSL Certificate</h3>
+        <h3>SSL Certificate</h3>
         <ul>
-            <li><strong>Valid:</strong> <span style='color: {"#10b981" if ssl.get("valid") else "#ef4444"};'>
-                {'✅ Yes' if ssl.get('valid') else '❌ No'}
+            <li><strong>Valid:</strong> <span style='color: {"#34d399" if ssl.get("valid") else "#f87171"}; font-weight: 600;'>
+                {'Yes' if ssl.get('valid') else 'No'}
             </span></li>
             <li><strong>Issuer:</strong> {ssl.get('issuer', 'N/A')}</li>
             <li><strong>Expires:</strong> {ssl.get('expires', 'N/A')}</li>
@@ -466,46 +575,55 @@ class DomainReconApp(QMainWindow):
         """
 
         headers = recon.get('security_headers', {})
-        html += "<h3 style='color: #8b5cf6;'>Security Headers</h3><ul>"
+        html += "<h3>Security Headers</h3><ul>"
         for header, value in headers.items():
-            color = "#10b981" if value != "Not set" else "#ef4444"
-            html += f"<li><strong>{header}:</strong> <span style='color: {color};'>{value}</span></li>"
+            color = "#34d399" if value != "Not set" else "#f87171"
+            html += f"<li><strong>{header}:</strong> <span style='color: {color}; font-weight: 600;'>{value}</span></li>"
         html += "</ul>"
 
         owasp = results.get('owasp_analysis', {})
         if owasp:
-            html += f"<h3 style='color: #8b5cf6;'>OWASP Analysis</h3>"
-            html += f"<p>{owasp.get('summary', 'No OWASP analysis available')}</p>"
+            html += f"<h3>OWASP Analysis</h3>"
+            html += f"<p style='color: #d1d5db;'>{owasp.get('summary', 'No OWASP analysis available')}</p>"
 
         self.security_tab.setHtml(html)
 
     def display_threats(self, results):
         threat = results.get('threat_analysis', {})
-        html = "<h2 style='color: #ef4444;'>Threat Analysis</h2><hr>"
+        risk_score = threat.get('risk_score', 0)
+        html = f"""
+        <style>
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; }}
+            h2 {{ color: #f87171; border-bottom: 2px solid #1f2937; padding-bottom: 10px; }}
+            h3 {{ color: #fbbf24; margin-top: 25px; margin-bottom: 12px; }}
+            strong {{ color: #d1d5db; }}
+            ul {{ line-height: 2.0; }}
+            li {{ margin-bottom: 8px; }}
+        </style>
+        <h2>Threat Analysis</h2>
 
-        html += f"""
-        <h3 style='color: #f59e0b;'>Risk Assessment</h3>
-        <p><strong>Risk Score:</strong> <span style='color: {"#ef4444" if threat.get("risk_score", 0) > 70 else "#f59e0b" if threat.get("risk_score", 0) > 40 else "#10b981"};'>
-            {threat.get('risk_score', 0)}/100
+        <h3>Risk Assessment</h3>
+        <p><strong>Risk Score:</strong> <span style='color: {"#f87171" if risk_score > 70 else "#fbbf24" if risk_score > 40 else "#34d399"}; font-size: 18px; font-weight: 600;'>
+            {risk_score}/100
         </span></p>
         """
 
         flags = threat.get('rule_based_flags', [])
         if flags:
-            html += "<h3 style='color: #f59e0b;'>Threat Indicators</h3><ul>"
+            html += "<h3>Threat Indicators</h3><ul>"
             for flag in flags:
-                html += f"<li style='color: #ef4444;'>⚠️ {flag}</li>"
+                html += f"<li style='color: #fca5a5;'>{flag}</li>"
             html += "</ul>"
 
         vuln = results.get('vulnerability_analysis', {})
         vuln_summary = vuln.get('vulnerability_summary', {})
         html += f"""
-        <h3 style='color: #f59e0b;'>Vulnerabilities</h3>
+        <h3>Vulnerabilities</h3>
         <ul>
-            <li><strong>Critical:</strong> <span style='color: #ef4444;'>{vuln_summary.get('critical', 0)}</span></li>
-            <li><strong>High:</strong> <span style='color: #f59e0b;'>{vuln_summary.get('high', 0)}</span></li>
-            <li><strong>Medium:</strong> <span style='color: #eab308;'>{vuln_summary.get('medium', 0)}</span></li>
-            <li><strong>Low:</strong> <span style='color: #10b981;'>{vuln_summary.get('low', 0)}</span></li>
+            <li><strong>Critical:</strong> <span style='color: #f87171; font-weight: 600;'>{vuln_summary.get('critical', 0)}</span></li>
+            <li><strong>High:</strong> <span style='color: #fb923c; font-weight: 600;'>{vuln_summary.get('high', 0)}</span></li>
+            <li><strong>Medium:</strong> <span style='color: #fbbf24; font-weight: 600;'>{vuln_summary.get('medium', 0)}</span></li>
+            <li><strong>Low:</strong> <span style='color: #34d399; font-weight: 600;'>{vuln_summary.get('low', 0)}</span></li>
         </ul>
         """
 
@@ -513,26 +631,34 @@ class DomainReconApp(QMainWindow):
 
     def display_compliance(self, results):
         compliance = results.get('compliance_audit', {})
-        html = "<h2 style='color: #10b981;'>Compliance Audit</h2><hr>"
-
         score = compliance.get('overall_score', 0)
-        html += f"""
-        <h3 style='color: #14b8a6;'>Overall Score</h3>
-        <p><strong>Score:</strong> <span style='color: {"#10b981" if score > 70 else "#f59e0b" if score > 40 else "#ef4444"};'>
+        html = f"""
+        <style>
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; }}
+            h2 {{ color: #34d399; border-bottom: 2px solid #1f2937; padding-bottom: 10px; }}
+            h3 {{ color: #5eead4; margin-top: 25px; margin-bottom: 12px; }}
+            strong {{ color: #d1d5db; }}
+            ul {{ line-height: 2.0; }}
+            li {{ margin-bottom: 8px; color: #e5e7eb; }}
+        </style>
+        <h2>Compliance Audit</h2>
+
+        <h3>Overall Score</h3>
+        <p><strong>Score:</strong> <span style='color: {"#34d399" if score > 70 else "#fbbf24" if score > 40 else "#f87171"}; font-size: 18px; font-weight: 600;'>
             {score}/100
         </span></p>
         """
 
         gdpr = compliance.get('gdpr_compliance', {})
         if gdpr:
-            html += "<h3 style='color: #14b8a6;'>GDPR Compliance</h3><ul>"
+            html += "<h3>GDPR Compliance</h3><ul>"
             for key, value in gdpr.items():
                 html += f"<li><strong>{key}:</strong> {value}</li>"
             html += "</ul>"
 
         recommendations = compliance.get('recommendations', [])
         if recommendations:
-            html += "<h3 style='color: #14b8a6;'>Compliance Recommendations</h3><ul>"
+            html += "<h3>Compliance Recommendations</h3><ul>"
             for rec in recommendations:
                 html += f"<li>{rec}</li>"
             html += "</ul>"
@@ -541,22 +667,32 @@ class DomainReconApp(QMainWindow):
 
     def display_recommendations(self, results):
         remediation = results.get('remediation_playbook', {})
-        html = "<h2 style='color: #8b5cf6;'>Security Recommendations</h2><hr>"
+        html = """
+        <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; }
+            h2 { color: #a78bfa; border-bottom: 2px solid #1f2937; padding-bottom: 10px; }
+            h3 { color: #c4b5fd; margin-top: 25px; margin-bottom: 12px; }
+            strong { color: #d1d5db; }
+            ul, ol { line-height: 2.0; }
+            li { margin-bottom: 12px; color: #e5e7eb; }
+        </style>
+        <h2>Security Recommendations</h2>
+        """
 
         summary = remediation.get('executive_summary', {})
         recommendations = summary.get('key_recommendations', [])
 
         if recommendations:
-            html += "<h3 style='color: #a78bfa;'>Priority Actions</h3><ol>"
+            html += "<h3>Priority Actions</h3><ol>"
             for rec in recommendations:
-                html += f"<li style='margin-bottom: 10px;'>{rec}</li>"
+                html += f"<li>{rec}</li>"
             html += "</ol>"
 
         threat_recs = results.get('threat_analysis', {}).get('recommendations', [])
         if threat_recs:
-            html += "<h3 style='color: #a78bfa;'>Threat Mitigation</h3><ul>"
+            html += "<h3>Threat Mitigation</h3><ul>"
             for rec in threat_recs:
-                html += f"<li style='margin-bottom: 10px;'>{rec}</li>"
+                html += f"<li>{rec}</li>"
             html += "</ul>"
 
         self.recommendations_tab.setHtml(html)
